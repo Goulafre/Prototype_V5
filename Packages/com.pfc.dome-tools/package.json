@@ -1,0 +1,59 @@
+{
+  "name": "com.pfc.dome-tools",
+  "description": "Dome Content Creation at the Speed of Thought – Tools for Fulldome Content Production and Viewing.",
+  "author": {
+    "name": "prefrontal cortex",
+    "email": "contact@prefrontalcortex.de",
+    "url": "https://prefrontalcortex.de"
+  },
+  "version": "0.8.1",
+  "unity": "2021.3",
+  "displayName": "pfc Dome Tools",
+  "keywords": [
+    "unity",
+    "pfc",
+    "tools",
+    "packages",
+    "fulldome",
+    "rendering"
+  ],
+  "license": "Proprietary",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/prefrontalcortex/dometools"
+  },
+  "homepage": "https://prefrontalcortex.de/en/projects/dome-tools/",
+  "bugs": {
+    "url": "https://github.com/prefrontalcortex/dometools/issues"
+  },
+  "dependencies": {
+    "com.unity.ugui": "1.0.0",
+    "com.unity.shadergraph": "12.1.12"
+  },
+  "samples": [
+    {
+      "displayName": "(IMPORT THIS FIRST!) Content – Basic Sample for all Render Pipelines",
+      "description": "Demonstrates the basic usage of the Dome Rig for all render pipelines.",
+      "path": "Samples~/BasicExample-AllRenderPipelines"
+    },
+    {
+      "displayName": "Content – Built-in Render Pipeline",
+      "description": "Demonstrates BiRP-specific setup and usage of the Dome Rig.",
+      "path": "Samples~/ContentExample-Built-in"
+    },
+    {
+      "displayName": "Content – Universal Render Pipeline",
+      "description": "Demonstrates URP-specific setup and usage of the Dome Rig.",
+      "path": "Samples~/ContentExample-URP"
+    },
+    {
+      "displayName": "Content – HD Render Pipeline",
+      "description": "Demonstrates HDRP-specific setup and usage of the Dome Rig.",
+      "path": "Samples~/ContentExample-HDRP"
+    }
+  ],
+  "publishConfig": {
+    "registry": "https://package.openupm.com"
+  },
+  "_fingerprint": "df3e378d682e88381f1507f4bfecaff1c75fb77a"
+}
