@@ -41,7 +41,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3044277714324312135}
-  - component: {fileID: 950999021647693437}
   - component: {fileID: 704332811398194214}
   m_Layer: 0
   m_Name: ReflectionCube
@@ -71,27 +70,6 @@ Transform:
   - {fileID: 2411767772647387332}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &950999021647693437
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3069324552727347204}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 08cbc413a51d748879230aa941320ae8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::OSCValueToTransform
-  audioValue: 0
-  rotationSpeed: {x: 5, y: 8, z: 4}
-  scaleIntensity: 2
-  maxScaleMultiplier: 2
-  responsePower: 2
-  attackSpeed: 42
-  releaseSpeed: 10
-  transientBoost: 1.2
-  transientMemory: 18
 --- !u!95 &704332811398194214
 Animator:
   serializedVersion: 7
