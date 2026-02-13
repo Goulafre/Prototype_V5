@@ -108,7 +108,7 @@ Material:
     - _Cutoff: 0.5
     - _DetailAlbedoMapScale: 1
     - _DetailNormalMapScale: 1
-    - _DistanceBlend: 0.56908315
+    - _DistanceBlend: 0.9089412
     - _DstBlend: 0
     - _DstBlendAlpha: 0
     - _EMISSION: 0
