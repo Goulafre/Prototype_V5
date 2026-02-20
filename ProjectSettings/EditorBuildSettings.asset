@@ -11,9 +11,12 @@ EditorBuildSettings:
   - enabled: 0
     path: Assets/Scenes/Critical_Spirit_Demo.unity
     guid: c4b5d7da9e2884b6e8fac206a899793c
-  - enabled: 1
+  - enabled: 0
     path: Assets/Project/Runtime/Prototype/Scenes/CriticalSpirit.unity
     guid: e2be86a9e40ad4c759655f2990e8bc52
+  - enabled: 1
+    path: Assets/Scenes/Critical_Spirit_V9.unity
+    guid: a88e31bf4fdf145678f084512b0ddba1
   m_configObjects:
     Unity.XR.Oculus.Settings: {fileID: 11400000, guid: f339e6b770cfa4b91be75c9760461a18, type: 2}
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}
