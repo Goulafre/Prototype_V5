@@ -147,7 +147,7 @@ Material:
     - _Cutoff: 0.5
     - _DetailAlbedoMapScale: 1
     - _DetailNormalMapScale: 1
-    - _DistanceBlend: 0.6630745
+    - _DistanceBlend: 1
     - _DropShadow_Alpha: 0
     - _DropShadow_falloff: 0.8
     - _DropShadow_round: 0.08
