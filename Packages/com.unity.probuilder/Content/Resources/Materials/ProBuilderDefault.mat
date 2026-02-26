@@ -218,6 +218,7 @@ Material:
     - _UVSec: 1
     - _UseShadowThreshold: 0
     - _Wavelength: 0.17857142
+    - _XRMotionVectorsPass: 1
     - _ZTestDepthEqualForOpaque: 3
     - _ZTestGBuffer: 4
     - _ZTestTransparent: 4
