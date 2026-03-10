@@ -11,7 +11,7 @@ public class ShockwavePool : MonoBehaviour
 
     [Header("Shape")]
     public float startRadiusXZ = 0.2f;
-    public float endRadiusXZ = 8f;
+    public float endRadiusXZ = 15f;
     public float yScale = 0.15f;
 
     [Header("Timing")]
@@ -19,9 +19,7 @@ public class ShockwavePool : MonoBehaviour
     public float fadeDuration = 0.25f;
     public AnimationCurve ease = AnimationCurve.EaseInOut(0, 0, 1, 1);
 
-    [Header("Material Fade (optional)")]
-    public Renderer[] ringRenderers;      // optional: assign renderers in same order as rings
-    public string alphaParam = "_Alpha";  // your shader float
+    [Header("Renderer Behaviour")]
     public bool disableRendererWhenDone = true;
 
     struct RingState
@@ -31,32 +29,38 @@ public class ShockwavePool : MonoBehaviour
     }
 
     RingState[] state;
+    Renderer[] renderers;
     int index;
     bool armed = true;
 
     MaterialPropertyBlock mpb;
+
+    static readonly int BaseColorID = Shader.PropertyToID("_BaseColor");
+    static readonly int EmissionColorID = Shader.PropertyToID("_EmissionColor");
 
     void Awake()
     {
         mpb = new MaterialPropertyBlock();
 
         if (rings == null) rings = new Transform[0];
+
         state = new RingState[rings.Length];
+        renderers = new Renderer[rings.Length];
 
-        // If renderers not provided, try get from rings
-        if (ringRenderers == null || ringRenderers.Length != rings.Length)
-        {
-            ringRenderers = new Renderer[rings.Length];
-            for (int i = 0; i < rings.Length; i++)
-                ringRenderers[i] = rings[i] ? rings[i].GetComponentInChildren<Renderer>() : null;
-        }
-
-        // init hidden
         for (int i = 0; i < rings.Length; i++)
         {
             if (!rings[i]) continue;
+
+            renderers[i] = rings[i].GetComponentInChildren<Renderer>();
             rings[i].localScale = new Vector3(startRadiusXZ, yScale, startRadiusXZ);
-            if (ringRenderers[i] != null) ringRenderers[i].enabled = false;
+
+            if (renderers[i] != null)
+            {
+                // start hidden
+                renderers[i].enabled = false;
+                SetFade(renderers[i], 0f);
+            }
+
             state[i].active = false;
             state[i].age = 999f;
         }
@@ -69,7 +73,7 @@ public class ShockwavePool : MonoBehaviour
 
         if (armed && k >= kickThreshold)
         {
-            TriggerNext(k);
+            TriggerNext();
             armed = false;
         }
         else if (!armed && k < kickThreshold * rearmRatio)
@@ -78,7 +82,7 @@ public class ShockwavePool : MonoBehaviour
         }
     }
 
-    void TriggerNext(float strength01)
+    void TriggerNext()
     {
         if (rings.Length == 0) return;
 
@@ -92,10 +96,10 @@ public class ShockwavePool : MonoBehaviour
 
         rings[i].localScale = new Vector3(startRadiusXZ, yScale, startRadiusXZ);
 
-        if (ringRenderers[i] != null)
+        if (renderers[i] != null)
         {
-            ringRenderers[i].enabled = true;
-            SetAlpha(i, 1f);
+            renderers[i].enabled = true;
+            SetFade(renderers[i], 1f);
         }
     }
 
@@ -108,39 +112,61 @@ public class ShockwavePool : MonoBehaviour
             if (!state[i].active || !rings[i]) continue;
 
             state[i].age += Time.deltaTime;
-
             float age = state[i].age;
 
-            // expand
+            // Expand
             float expandT = Mathf.Clamp01(age / Mathf.Max(0.01f, expandDuration));
             float e = ease.Evaluate(expandT);
             float r = Mathf.Lerp(startRadiusXZ, endRadiusXZ, e);
             rings[i].localScale = new Vector3(r, yScale, r);
 
-            // fade after expand
+            // Fade after expand
             float fadeT = 0f;
             if (age > expandDuration)
                 fadeT = Mathf.Clamp01((age - expandDuration) / Mathf.Max(0.01f, fadeDuration));
 
             float alpha = 1f - fadeT;
-            SetAlpha(i, alpha);
 
+            if (renderers[i] != null)
+                SetFade(renderers[i], alpha);
+
+            // Done
             if (age >= total)
             {
                 state[i].active = false;
-                if (ringRenderers[i] != null && disableRendererWhenDone)
-                    ringRenderers[i].enabled = false;
+
+                if (renderers[i] != null)
+                {
+                    SetFade(renderers[i], 0f);
+
+                    if (disableRendererWhenDone)
+                        renderers[i].enabled = false;
+                }
             }
         }
     }
 
-    void SetAlpha(int i, float a)
+    void SetFade(Renderer rend, float a)
     {
-        var rend = ringRenderers[i];
         if (rend == null) return;
 
         rend.GetPropertyBlock(mpb);
-        mpb.SetFloat(alphaParam, a);
+
+        // URP/Lit uses _BaseColor alpha for transparency
+        if (rend.sharedMaterial != null && rend.sharedMaterial.HasProperty(BaseColorID))
+        {
+            Color baseCol = rend.sharedMaterial.GetColor(BaseColorID);
+            baseCol.a = a;
+            mpb.SetColor(BaseColorID, baseCol);
+        }
+
+        // Fade emission too (prevents glowing after alpha fades)
+        if (rend.sharedMaterial != null && rend.sharedMaterial.HasProperty(EmissionColorID))
+        {
+            Color em = rend.sharedMaterial.GetColor(EmissionColorID);
+            mpb.SetColor(EmissionColorID, em * a);
+        }
+
         rend.SetPropertyBlock(mpb);
     }
 }
